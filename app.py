@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+from pathlib import Path
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
 import plotly.express as px
@@ -42,7 +43,13 @@ st.markdown("""
 # =========================
 @st.cache_data
 def load_data():
-    return pd.read_csv("Mall_Customers (4).csv")
+    csv_path = Path(__file__).resolve().parent / "Mall_Customers (4).csv"
+    if not csv_path.exists():
+        raise FileNotFoundError(
+            f"Data file not found: {csv_path}.\n"
+            "Please make sure 'Mall_Customers (4).csv' is present in the app folder."
+        )
+    return pd.read_csv(csv_path)
 
 df = load_data()
 
